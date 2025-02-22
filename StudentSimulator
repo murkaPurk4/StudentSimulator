@@ -1,0 +1,70 @@
+import cmd
+
+class Athlete:
+    def __init__(self, sport, training_hours):
+        self.sport = sport
+        self.training_hours = training_hours
+
+    def train(self):
+        self.training_hours += 1
+        print(f'Training in {self.sport}. Total training hours: {self.training_hours}.')
+
+class Musician:
+    def __init__(self, instrument, practice_hours):
+        self.instrument = instrument
+        self.practice_hours = practice_hours
+
+    def practice(self):
+        self.practice_hours += 1
+        print(f'Practicing {self.instrument}. Total practice hours: {self.practice_hours}.')
+
+class Student(Athlete, Musician):
+    def __init__(self, name, age, sport, training_hours, instrument, practice_hours):
+        Athlete.__init__(self, sport, training_hours)
+        Musician.__init__(self, instrument, practice_hours)
+        self.name = name
+        self.age = age
+
+    def study(self):
+        print(f'{self.name} is studying.')
+
+    def status(self):
+        print(f'Name: {self.name}')
+        print(f'Age: {self.age}')
+        print(f'Sport: {self.sport}')
+        print(f'Training hours: {self.training_hours}')
+        print(f'Instrument: {self.instrument}')
+        print(f'Practice hours: {self.practice_hours}')
+
+class StudentSimulator(cmd.Cmd):
+    prompt = '>> '
+    intro = 'Welcome to the Student Simulator! Type "help" for a list of commands.'
+
+    def __init__(self, student):
+        super().__init__()
+        self.student = student
+
+    def do_train(self, args):
+        """Train in the student's sport"""
+        self.student.train()
+
+    def do_practice(self, args):
+        """Practice the student's instrument"""
+        self.student.practice()
+
+    def do_study(self, args):
+        """Let the student study"""
+        self.student.study()
+
+    def do_status(self, args):
+        """Show the student's current status"""
+        self.student.status()
+
+    def do_exit(self, args):
+        """Exit the simulator"""
+        print('Goodbye!')
+        return True
+
+if __name__ == '__main__':
+    student = Student("Murad", 12, "Baketball", 3, "Guitar", 5)
+    StudentSimulator(student).cmdloop()
